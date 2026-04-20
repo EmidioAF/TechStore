@@ -1,0 +1,318 @@
+/* 
+  1. VARIÁVEIS CSS (Tema Global)
+  Define todas as cores, sombras e espaçamentos reutilizáveis
+  em toda a aplicação. Facilita manutenção e consistência visual.
+*/
+:root {
+  --bg: #f4f7fb;         
+  --surface: #ffffff;  
+  --primary: #2563eb;
+  --primary-dark: #1d4ed8; 
+  --text: #1e293b; 
+  --muted: #64748b; 
+  --border: #dbe3ee; 
+  --shadow: 0 10px 30px rgba(15, 23, 42, 0.08);
+}
+
+/* 
+  2. RESET CSS & ESTILOS GLOBAIS
+  Remove estilos padrão do navegador e estabelece
+  comportamentos padrão para todos os elementos.
+*/
+
+/* Reset universal: Remove margens, padding padrão */
+* {
+  box-sizing: border-box;
+  margin: 0;           
+  padding: 0;        
+}
+
+/* Estilos do corpo da página */
+body {
+  font-family: Arial, sans-serif; 
+  background: var(--bg);        
+  color: var(--text);
+}
+
+/* Imagens: ocupam largura total e não ficam inline */
+img {
+  display: block;  
+  width: 100%;  
+}
+
+/* Listas: Remove indentação padrão */
+ul {
+  padding-left: 18px; 
+}
+
+/* Links: Remove sublinhado padrão */
+a {
+  text-decoration: none;
+  color: inherit;      
+}
+
+/* Botões: Estilos base (visual customizado) */
+button {
+  cursor: pointer; 
+  border: none;    
+}
+
+
+/* 
+  3. LAYOUT PRINCIPAL
+  Define a estrutura geral da página e seus containers.
+*/
+
+/* Container: Mantém conteúdo centralizado com max-width */
+.container {
+  width: min(1120px, calc(100% - 32px)); 
+  margin: 0 auto; 
+}
+
+/* App Shell: Estrutura principal que garante footer grudado no fim */
+.app-shell {
+  min-height: 100vh;  
+  display: flex;  
+  flex-direction: column; 
+}
+
+/* Main Content: Cresce para ocupar espaço disponível entre header e footer */
+.main-content {
+  flex: 1;         
+  padding: 32px 0 48px;
+}
+
+/* 
+  4. HEADER & NAVEGAÇÃO
+  Estilos do cabeçalho fixo e menu de navegação.
+*/
+
+/* Header: Cabeçalho fixo no topo da página */
+.site-header {
+  background: var(--surface);  
+  border-bottom: 1px solid var(--border); 
+  position: sticky;          
+  top: 0;              
+  z-index: 10;
+}
+
+/* Conteúdo do Header: Logo + Navegação lado a lado */
+.header-content {
+  min-height: 88px;
+  display: flex;  
+  justify-content: space-between; 
+  align-items: center; 
+  gap: 20px;          
+}
+
+/* Labels e categorias: Texto destaque em azul */
+.brand-kicker,
+.section-label,
+.product-category {
+  color: var(--primary);
+  font-size: 0.9rem;  
+  font-weight: 700;
+}
+
+/* Título da marca: Logo principal */
+.brand-title {
+  font-size: 1.4rem;
+}
+
+/* Lista de navegação */
+.nav-list {
+  display: flex;  
+  list-style: none; 
+  gap: 18px;     
+}
+
+/* Links da navegação */
+.nav-list a {
+  padding: 8px 12px;  
+  border-radius: 8px;  
+  font-weight: 600;
+}
+
+/* Link ativo e hover: Destaque visual */
+.nav-list a.active,
+.nav-list a:hover {
+  background: #e8f0ff; 
+  color: var(--primary-dark);
+}
+
+
+/* 
+  5. SEÇÃO HERO & TÍTULOS
+  Estilos da seção de boas-vindas e títulos de seções.
+*/
+
+/* Hero Section: Layout com 2 colunas (texto + card) */
+.hero-section {
+  display: grid;              
+  grid-template-columns: 2fr 1fr; 
+  gap: 24px;              
+  align-items: start;       
+}
+
+/* Títulos H2 em hero e seções */
+.hero-section h2,
+.section-header h2 {
+  font-size: 2rem; 
+  margin: 8px 0 12px;
+}
+
+/* Parágrafos em diferentes seções: Texto secundário */
+.hero-section p,
+.section-header p,
+.info-card p,
+.site-footer p {
+  color: var(--muted); 
+  line-height: 1.6;
+}
+
+/* Cards: Estilo comum para hero-card, product-card e info-card */
+.hero-card,
+.product-card,
+.info-card {
+  background: var(--surface); 
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  box-shadow: var(--shadow);
+}
+
+/* Hero Card: Destaque na home */
+.hero-card {
+  padding: 24px; 
+}
+
+/* Lista dentro do hero card */
+.hero-card ul {
+  margin-top: 14px; 
+  display: grid; 
+  gap: 8px;  
+}
+
+/* Espaçamento entre seções */
+.section-spacing {
+  margin-top: 40px; 
+}
+
+/* Header de seção: Contém label + título + descrição */
+.section-header {
+  margin-bottom: 20px; 
+}
+
+
+/* 
+  6. GRADE DE PRODUTOS (GRID)
+  Layout responsivo para exibir produtos em grid.
+*/
+
+/* Grid de Produtos: 3 colunas de igual largura */
+.products-grid {
+  display: grid;         
+  grid-template-columns: repeat(3, 1fr);
+  gap: 20px; 
+}
+
+
+/* 
+  7. CARD DE PRODUTO
+  Estilos do card individual que exibe cada produto.
+*/
+
+/* Produto Card: Container do card */
+.product-card {
+  overflow: hidden;
+}
+
+/* Imagem do Produto: Responsiva e com altura fixa */
+.product-image {
+  height: 220px;  
+  object-fit: cover;
+}
+
+/* Informações do Produto: Texto e botão */
+.product-info {
+  padding: 18px;
+}
+
+/* Título do Produto */
+.product-info h3 {
+  margin: 10px 0 8px;
+  font-size: 1.1rem;
+}
+
+
+/* Preço do Produto: Em destaque */
+.product-price {
+  font-size: 1.05rem;
+  font-weight: 700;
+  margin-bottom: 14px;
+}
+
+/*
+  8. BOTÕES
+  Estilos dos botões de ação primários.
+*/
+
+/* Botão Primário: Call-to-action */
+.primary-button {
+  background: var(--primary);
+  color: white;   
+  padding: 10px 14px;  
+  border-radius: 10px; 
+  font-weight: 700; 
+}
+
+/* Hover do Botão: Feedback visual */
+.primary-button:hover {
+  background: var(--primary-dark); 
+}
+
+
+/*
+  9. GRID DE INFORMAÇÕES (ABOUT)
+  Layout para cards informativos na página About.
+*/
+
+/* Grid de About: 3 colunas iguais com cards */
+.about-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); 
+  gap: 20px;
+}
+
+/* 
+  Os cards informativos (.info-card) usam os mesmos estilos
+  definidos em "5. SEÇÃO HERO & TÍTULOS" para padronização
+  (background, border, border-radius, box-shadow)
+*/
+
+.info-card {
+  padding: 24px;
+}
+
+.info-card h3 {
+  margin-bottom: 10px;
+}
+
+.site-footer {
+  background: var(--surface);
+  border-top: 1px solid var(--border);
+  padding: 20px 0;
+}
+
+@media (max-width: 900px) {
+  .hero-section,
+  .products-grid,
+  .about-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .header-content {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 16px 0;
+  }
+}
