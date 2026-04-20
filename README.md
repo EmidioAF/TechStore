@@ -25,11 +25,25 @@ A proposta do projeto é simular uma loja virtual simples de produtos de tecnolo
 O projeto foi organizado em pastas para facilitar a separação de responsabilidades e a manutenção do código, seguindo a proposta do enunciado de usar `components`, `pages`, `services` e outras divisões equivalentes.
 
 ```bash
-src/
-  components/
-  pages/
-  data/
-  styles/
+├── package.json
+├── vite.config.js
+├── index.html
+└── src/
+    ├── App.jsx
+    ├── main.jsx
+    ├── components/
+    │   ├── Header.jsx
+    │   ├── Footer.jsx
+    │   ├── ProductCard.jsx
+    │   └── ProductList.jsx
+    ├── pages/
+    │   ├── Home.jsx
+    │   ├── Products.jsx
+    │   └── About.jsx
+    ├── data/
+    │   └── products.js
+    └── styles/
+        └── global.css
 ```
 
 ## Funcionalidades implementadas
