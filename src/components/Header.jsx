@@ -26,6 +26,7 @@ export default function Header() {
             <li><NavLink to="/">Home</NavLink></li>
             <li><NavLink to="/produtos">Produtos</NavLink></li>
             <li><NavLink to="/sobre">Sobre</NavLink></li>
+            <li><NavLink to="/admin-produtos">Admin</NavLink></li>
           </ul>
         </nav>
       </div>
