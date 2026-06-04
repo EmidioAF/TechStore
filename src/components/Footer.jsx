@@ -1,16 +1,14 @@
-/**
- * Componente de rodapé da aplicação.
- *
- * Nota: Este componente atualmente é bem simples e pode ser expandido
- * para incluir informações de contato, redes sociais, links úteis, etc.
- */
-
 export default function Footer() {
   return (
     <footer className="site-footer">
-      <div className="container">
-        {/* Texto de rodapé*/}
-        <p>First Test Footer</p>
+      <div className="container footer-content">
+        <div className="footer-brand">
+          <span>⚡ TechStore</span>
+          <p>Sua loja de periféricos, monitores e acessórios gamer.</p>
+        </div>
+        <div className="footer-links">
+          <p>© {new Date().getFullYear()} TechStore — Projeto Acadêmico PUC-PR</p>
+        </div>
       </div>
     </footer>
   )

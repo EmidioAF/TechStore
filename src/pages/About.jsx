@@ -1,49 +1,34 @@
-/**
- * Página de informações sobre a empresa TechStore.
- * Responsabilidades:
- * - Apresenta a história e valores da empresa
- * - Exibe objetivos do projeto acadêmico
- * - Fornece contexto sobre o propósito da aplicação
- * 
- * Estrutura:
- * - Seção com cards de informações (grid layout)
- * - Cada card contém um aspecto diferente da empresa
- */
-
 export default function About() {
   return (
     <section className="about-page section-spacing">
-      {/* Header da página - título e subtítulo */}
       <div className="section-header">
-        <p className="section-label">Sobre a TechStore</p>
-        <h2>Conheça a nossa história</h2>
+        <span className="section-label">Sobre a TechStore</span>
+        <h2>Conheça nossa história</h2>
       </div>
 
-      {/* Grid de informações: 3 cards com informações sobre a empresa */}
       <div className="about-grid">
-        
-        {/* Card 1: Identificação - Quem somos */}
         <article className="info-card">
-          <h3>Quem somos?</h3>
+          <h3>Quem somos</h3>
           <p>
-            A TechStore é um projeto acadêmico criado para demonstrar os fundamentos do desenvolvimento web com React. 
-            Nosso objetivo é construir uma vitrine simples de produtos de tecnologia, evoluindo gradualmente para um e-commerce mais completo.
+            A TechStore é um projeto acadêmico desenvolvido na PUC-PR para demonstrar
+            conceitos de desenvolvimento web moderno com React. Simulamos uma vitrine
+            real de produtos de tecnologia, evoluindo a cada entrega.
           </p>
         </article>
 
-        {/* Card 2: Valores - Princípios da empresa */}
         <article className="info-card">
           <h3>Nossos valores</h3>
           <p>
-            Compromisso com a qualidade, inovação contínua e satisfação do cliente são os pilares que orientam nossa atuação.
+            Qualidade, inovação e experiência do usuário são os pilares que guiam
+            cada decisão técnica e de design tomada no projeto.
           </p>
         </article>
 
-        {/* Card 3: Objetivo - Propósito do projeto */}
         <article className="info-card">
-          <h3>Nosso objetivo</h3>
+          <h3>Tecnologias</h3>
           <p>
-            Criar uma plataforma de e-commerce acadêmica simples, que sirva como base para aprendizado e evolução nas próximas entregas do projeto.
+            React 18 · React Router v6 · Vite · Context API · localStorage
+            (persistência) · JWT simulado (autenticação) · Upload base64.
           </p>
         </article>
       </div>

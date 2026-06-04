@@ -1,16 +1,19 @@
 import React from 'react'
 import ReactDOM from 'react-dom/client'
 import { BrowserRouter } from 'react-router-dom'
-import App from './App'
+import { AuthProvider } from './context/AuthContext'
 import { ProductsProvider } from './context/ProductsContext'
+import App from './App'
 import './styles/global.css'
 
 ReactDOM.createRoot(document.getElementById('root')).render(
   <React.StrictMode>
     <BrowserRouter>
-      <ProductsProvider>
-        <App />
-      </ProductsProvider>
+      <AuthProvider>
+        <ProductsProvider>
+          <App />
+        </ProductsProvider>
+      </AuthProvider>
     </BrowserRouter>
-  </React.StrictMode>,
+  </React.StrictMode>
 )
