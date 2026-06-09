@@ -7,46 +7,89 @@ import ProductList from '../components/ProductList'
 import FeedbackMessage from '../components/FeedbackMessage'
 
 export default function Products() {
-  const { products: all, categories, loading, error } = useProductsContext()
+  const { products: allProducts, categories, loading, error } = useProductsContext()
+
   const [search, setSearch] = useState('')
-  const [category, setCategory] = useState('all')
-  const [sort, setSort] = useState('default')
+  const [selectedCategory, setSelectedCategory] = useState('all')
+  const [sortBy, setSortBy] = useState('default')
 
   const products = useMemo(() => {
-    let list = [...all]
+    let filteredProducts = [...allProducts]
+
     if (search.trim()) {
-      list = list.filter((p) => {
-        const t = p.title || p.name || ''
-        return t.toLowerCase().includes(search.toLowerCase())
+      filteredProducts = filteredProducts.filter((product) => {
+        const productTitle = product.title || product.name || ''
+        return productTitle.toLowerCase().includes(search.toLowerCase())
       })
     }
-    if (category !== 'all') list = list.filter((p) => p.category === category)
-    if (sort === 'title-asc') list.sort((a, b) => (a.title || a.name || '').localeCompare(b.title || b.name || ''))
-    if (sort === 'title-desc') list.sort((a, b) => (b.title || b.name || '').localeCompare(a.title || a.name || ''))
-    if (sort === 'price-asc') list.sort((a, b) => Number(a.price) - Number(b.price))
-    if (sort === 'price-desc') list.sort((a, b) => Number(b.price) - Number(a.price))
-    return list
-  }, [all, search, category, sort])
+
+    if (selectedCategory !== 'all') {
+      filteredProducts = filteredProducts.filter(
+        (product) => product.category === selectedCategory
+      )
+    }
+
+    if (sortBy === 'title-asc') {
+      filteredProducts.sort((a, b) => {
+        const titleA = a.title || a.name || ''
+        const titleB = b.title || b.name || ''
+        return titleA.localeCompare(titleB)
+      })
+    }
+
+    if (sortBy === 'title-desc') {
+      filteredProducts.sort((a, b) => {
+        const titleA = a.title || a.name || ''
+        const titleB = b.title || b.name || ''
+        return titleB.localeCompare(titleA)
+      })
+    }
+
+    if (sortBy === 'price-asc') {
+      filteredProducts.sort((a, b) => Number(a.price) - Number(b.price))
+    }
+
+    if (sortBy === 'price-desc') {
+      filteredProducts.sort((a, b) => Number(b.price) - Number(a.price))
+    }
+
+    return filteredProducts
+  }, [allProducts, search, selectedCategory, sortBy])
 
   return (
     <section className="section-spacing">
       <div className="section-header">
-        <span className="section-label">Catálogo</span>
-        <h2>Todos os produtos</h2>
+        <p className="section-label">Catálogo interativo</p>
+        <h2>Explore os produtos da TechStore</h2>
+        <p>
+          Nesta etapa do RA2, a página de produtos evolui com busca, filtros,
+          ordenação e integração com serviço de dados.
+        </p>
       </div>
 
       <div className="filters-panel">
         <SearchBar value={search} onChange={setSearch} />
-        <CategoryFilter categories={categories} value={category} onChange={setCategory} />
-        <SortSelect value={sort} onChange={setSort} />
+        <CategoryFilter
+          categories={categories}
+          value={selectedCategory}
+          onChange={setSelectedCategory}
+        />
+        <SortSelect value={sortBy} onChange={setSortBy} />
       </div>
 
       {loading && <FeedbackMessage type="info" message="Carregando produtos..." />}
-      {error && <FeedbackMessage type="error" message="Erro ao carregar produtos." />}
+      {error && <FeedbackMessage type="error" message="Erro ao carregar os produtos." />}
+
       {!loading && !error && products.length === 0 && (
-        <FeedbackMessage type="warning" message="Nenhum produto encontrado com os filtros atuais." />
+        <FeedbackMessage
+          type="warning"
+          message="Nenhum produto encontrado com os filtros atuais."
+        />
       )}
-      {!loading && !error && products.length > 0 && <ProductList products={products} />}
+
+      {!loading && !error && products.length > 0 && (
+        <ProductList products={products} />
+      )}
     </section>
   )
 }

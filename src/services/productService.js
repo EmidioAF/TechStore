@@ -1,34 +1,35 @@
-import { products as localProducts } from '../data/products'
-import { categories as localCategories } from '../data/categories'
-
-const USE_REMOTE_API = false
+import { request } from './api'
 
 export async function getAllProducts() {
-  if (!USE_REMOTE_API) {
-    return Promise.resolve(localProducts)
-  }
-
-  const response = await fetch('https://dummyjson.com/products')
-  const data = await response.json()
-
-  return data.products.map((product) => ({
-    id: product.id,
-    title: product.title,
-    name: product.title,
-    price: product.price,
-    category: product.category,
-    image: product.thumbnail,
-    description: product.description,
-  }))
+  return request('/products')
 }
 
 export async function getAllCategories() {
-  if (!USE_REMOTE_API) {
-    return Promise.resolve(localCategories)
+  const products = await getAllProducts()
+  const unique = [...new Set(products.map((p) => p.category).filter(Boolean))]
+  return unique
+}
+
+export async function createProduct(formData) {
+  const token = localStorage.getItem('techstore_token')
+
+  const response = await fetch('http://localhost:3001/api/products', {
+    method: 'POST',
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+    body: formData,
+  })
+
+  const data = await response.json().catch(() => ({}))
+
+  if (!response.ok) {
+    throw new Error(data.message || 'Erro ao criar produto.')
   }
 
-  const response = await fetch('https://dummyjson.com/products/category-list')
-  const data = await response.json()
-
   return data
+}
+
+export async function removeProduct(id) {
+  return request(`/products/${id}`, { method: 'DELETE' })
 }

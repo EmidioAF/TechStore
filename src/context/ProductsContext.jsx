@@ -1,96 +1,72 @@
 import { createContext, useContext, useEffect, useMemo, useState } from 'react'
-import { getAllProducts, getAllCategories } from '../services/productService'
-import { loadCustomProducts, saveCustomProducts } from '../services/storageService'
+import {
+  getAllProducts,
+  getAllCategories,
+  createProduct,
+  removeProduct,
+} from '../services/productService'
 
 const ProductsContext = createContext()
 
 export function ProductsProvider({ children }) {
-  const [baseProducts, setBaseProducts] = useState([])
-  const [customProducts, setCustomProducts] = useState([])
+  const [products, setProducts] = useState([])
   const [categories, setCategories] = useState([])
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState(false)
 
-  // Combina produtos base (dados originais) + produtos persistidos pelo admin
-  const products = useMemo(
-    () => [...customProducts, ...baseProducts],
-    [customProducts, baseProducts]
-  )
+  async function loadData() {
+    try {
+      setLoading(true)
+      setError(false)
+
+      const [productsData, categoriesData] = await Promise.all([
+        getAllProducts(),
+        getAllCategories(),
+      ])
+
+      setProducts(productsData)
+      setCategories(categoriesData)
+    } catch {
+      setError(true)
+    } finally {
+      setLoading(false)
+    }
+  }
 
   useEffect(() => {
-    async function load() {
-      try {
-        setLoading(true)
-        setError(false)
-        const [prods, cats] = await Promise.all([getAllProducts(), getAllCategories()])
-        setBaseProducts(prods)
-        setCategories(cats)
-        // RA3: carrega produtos persistidos no localStorage
-        setCustomProducts(loadCustomProducts())
-      } catch (err) {
-        console.error('Erro ao carregar dados:', err)
-        setError(true)
-      } finally {
-        setLoading(false)
-      }
-    }
-    load()
+    loadData()
   }, [])
 
-  function addProduct(newProduct) {
-    const normalized = {
-      ...newProduct,
-      id: `custom-${Date.now()}`,
-      title: newProduct.title || newProduct.name,
-      name: newProduct.name || newProduct.title,
-      description: newProduct.description || 'Produto sem descrição.',
-    }
-    const updated = [normalized, ...customProducts]
-    setCustomProducts(updated)
-    saveCustomProducts(updated) // RA3: persiste
-    if (normalized.category && !categories.includes(normalized.category)) {
-      setCategories((prev) => [...prev, normalized.category])
+  async function addProduct(formData) {
+    const created = await createProduct(formData)
+    setProducts((prev) => [created, ...prev])
+
+    if (created.category && !categories.includes(created.category)) {
+      setCategories((prev) => [...prev, created.category])
     }
   }
 
-  function removeProduct(productId) {
-    const updated = customProducts.filter((p) => String(p.id) !== String(productId))
-    setCustomProducts(updated)
-    saveCustomProducts(updated) // RA3: persiste
+  async function deleteProduct(id) {
+    await removeProduct(id)
+    setProducts((prev) => prev.filter((p) => String(p.id) !== String(id)))
   }
 
-  function updateProduct(productId, updatedData) {
-    const updated = customProducts.map((p) =>
-      String(p.id) === String(productId)
-        ? {
-            ...p,
-            ...updatedData,
-            title: updatedData.title || updatedData.name,
-            name: updatedData.name || updatedData.title,
-          }
-        : p
-    )
-    setCustomProducts(updated)
-    saveCustomProducts(updated) // RA3: persiste
-  }
-
-  function getProductById(productId) {
-    return products.find((p) => String(p.id) === String(productId))
+  function getProductById(id) {
+    return products.find((p) => String(p.id) === String(id))
   }
 
   const value = useMemo(
     () => ({
       products,
-      customProducts,
       categories,
       loading,
       error,
       addProduct,
-      removeProduct,
-      updateProduct,
+      deleteProduct,
       getProductById,
+      reload: loadData,
     }),
-    [products, customProducts, categories, loading, error]
+    [products, categories, loading, error]
   )
 
   return (

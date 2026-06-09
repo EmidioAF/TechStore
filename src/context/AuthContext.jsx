@@ -1,27 +1,50 @@
 import { createContext, useContext, useEffect, useState } from 'react'
-import { getUser, isAuthenticated, login, logout } from '../services/authService'
+import { request } from '../services/api'
 
 const AuthContext = createContext()
 
 export function AuthProvider({ children }) {
   const [user, setUser] = useState(null)
-  const [authReady, setAuthReady] = useState(false)
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
-    if (isAuthenticated()) {
-      setUser(getUser())
+    const token = localStorage.getItem('techstore_token')
+
+    if (!token) {
+      setLoading(false)
+      return
     }
-    setAuthReady(true)
+
+    request('/auth/me')
+      .then((data) => setUser(data))
+      .catch(() => localStorage.removeItem('techstore_token'))
+      .finally(() => setLoading(false))
   }, [])
 
-  function handleLogin(username, password) {
-    const result = login(username, password)
-    if (result.success) setUser(getUser())
-    return result
+  async function login(email, password) {
+    const data = await request('/auth/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    })
+
+    localStorage.setItem('techstore_token', data.token)
+    setUser(data.user)
   }
 
-  function handleLogout() {
-    logout()
+  async function register(name, email, password) {
+    const data = await request('/auth/register', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ name, email, password }),
+    })
+
+    localStorage.setItem('techstore_token', data.token)
+    setUser(data.user)
+  }
+
+  function logout() {
+    localStorage.removeItem('techstore_token')
     setUser(null)
   }
 
@@ -29,10 +52,12 @@ export function AuthProvider({ children }) {
     <AuthContext.Provider
       value={{
         user,
-        authReady,
-        isAuth: !!user,
-        login: handleLogin,
-        logout: handleLogout,
+        loading,
+        login,
+        register,
+        logout,
+        isAuthenticated: !!user,
+        isAdmin: user?.role === 'admin',
       }}
     >
       {children}

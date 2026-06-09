@@ -1,42 +1,62 @@
-import { Link } from 'react-router-dom'
 import ProductList from '../components/ProductList'
-import { products } from '../data/products'
+import FeedbackMessage from '../components/FeedbackMessage'
+import { useProductsContext } from '../context/ProductsContext'
 
 export default function Home() {
-  const featured = products.slice(0, 3)
+  const { products, loading, error } = useProductsContext()
+  const featuredProducts = products.slice(0, 3)
 
   return (
     <>
       <section className="hero-section">
-        <div className="hero-text">
-          <span className="section-label">Bem-vindo à TechStore</span>
-          <h2>Equipe seu setup com o melhor da tecnologia</h2>
+        <div>
+          <p className="section-label">TechStore</p>
+          <h2>Bem-vindo à TechStore</h2>
           <p>
-            Periféricos, monitores e acessórios gamer selecionados para quem leva o setup a sério.
-            Navegue pelo catálogo, explore os detalhes e encontre o que você precisa.
+            Sua loja virtual de tecnologia com catálogo integrado ao backend,
+            autenticação de usuários, área administrativa e cadastro de produtos.
           </p>
-          <Link to="/produtos" className="primary-button hero-cta">
-            Ver catálogo completo →
-          </Link>
         </div>
 
         <div className="hero-card">
-          <h3>Categorias</h3>
-          <ul className="hero-categories">
-            <li>🖱️ Periféricos</li>
-            <li>🖥️ Monitores</li>
-            <li>🎧 Áudio</li>
-            <li>🔌 Acessórios</li>
+          <h3>O que oferecemos?</h3>
+          <p>Produtos de tecnologia para montar e melhorar seu setup.</p>
+          <ul>
+            <li>Periféricos</li>
+            <li>Monitores</li>
+            <li>Acessórios</li>
+            <li>Áudio</li>
           </ul>
         </div>
       </section>
 
       <section className="section-spacing">
         <div className="section-header">
-          <span className="section-label">Destaques</span>
-          <h2>Os mais procurados</h2>
+          <p className="section-label">Produtos em destaque</p>
+          <h2>Confira alguns itens do catálogo</h2>
+          <p>
+            Os produtos abaixo são carregados diretamente da API da aplicação.
+          </p>
         </div>
-        <ProductList products={featured} />
+
+        {loading && (
+          <FeedbackMessage type="info" message="Carregando produtos..." />
+        )}
+
+        {error && (
+          <FeedbackMessage type="error" message="Erro ao carregar produtos." />
+        )}
+
+        {!loading && !error && featuredProducts.length === 0 && (
+          <FeedbackMessage
+            type="warning"
+            message="Nenhum produto cadastrado ainda."
+          />
+        )}
+
+        {!loading && !error && featuredProducts.length > 0 && (
+          <ProductList products={featuredProducts} />
+        )}
       </section>
     </>
   )

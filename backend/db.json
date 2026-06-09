@@ -1,0 +1,31 @@
+{
+  "users": [
+    {
+      "id": 1,
+      "name": "Admin TechStore",
+      "email": "admin@techstore.com",
+      "password": "$2a$10$w8.kz63JUdz3RfjwHy8OiOQBohJ6axep/6WrKfzun2kijMF1D.m5O",
+      "role": "admin"
+    },
+    {
+      "id": 1780966949806,
+      "name": "teste1",
+      "email": "teste1@gmail.com",
+      "password": "$2a$10$A4kFeCtW85Vy2/BBnEFaIeOHlBbpDtIorAPphPvCXOdwSLqDOC6dy",
+      "role": "user"
+    }
+  ],
+  "products": [
+    {
+      "id": 1780966919607,
+      "title": "Teste",
+      "name": "Teste",
+      "price": 1111,
+      "category": "Áudio",
+      "description": "teste",
+      "image": "http://localhost:3001/uploads/1780966919604-thelogo.PNG",
+      "createdAt": "2026-06-09T01:01:59.607Z",
+      "createdBy": 1
+    }
+  ]
+}

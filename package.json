@@ -1,7 +1,7 @@
 {
-  "name": "mini-ecommerce-ra1",
+  "name": "techstore-ra3",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.0",
   "type": "module",
   "scripts": {
     "dev": "vite",
@@ -11,10 +11,10 @@
   "dependencies": {
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
-    "react-router-dom": "^6.30.1"
+    "react-router-dom": "^7.6.2"
   },
   "devDependencies": {
-    "vite": "^5.4.19",
-    "@vitejs/plugin-react": "^4.3.4"
+    "@vitejs/plugin-react": "^4.3.1",
+    "vite": "^5.4.10"
   }
 }

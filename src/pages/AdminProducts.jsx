@@ -1,124 +1,111 @@
-import { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
+/**
+ * AdminProducts - Área administrativa de produtos.
+ * 
+ * RA3: Rota protegida por autenticação. Exibe usuário logado,
+ * permite cadastrar produtos com persistência e deletar itens criados.
+ */
+
 import ProductForm from '../components/ProductForm'
+import ProductList from '../components/ProductList'
 import FeedbackMessage from '../components/FeedbackMessage'
 import { useProductsContext } from '../context/ProductsContext'
 import { useAuth } from '../context/AuthContext'
+import { useState } from 'react'
 
 export default function AdminProducts() {
-  const { customProducts, addProduct, removeProduct, updateProduct } = useProductsContext()
+  const { products, addProduct, deleteProduct } = useProductsContext()
   const { user, logout } = useAuth()
-  const navigate = useNavigate()
-  const [message, setMessage] = useState(null)
-  const [editingProduct, setEditingProduct] = useState(null)
+  const [message, setMessage] = useState('')
 
-  function handleAdd(newProduct) {
-    addProduct(newProduct)
-    setMessage({ type: 'success', text: `"${newProduct.title}" cadastrado e salvo com sucesso!` })
-    setTimeout(() => setMessage(null), 4000)
+  async function handleAddProduct(newProduct) {
+    await addProduct(newProduct)
+    setMessage('Produto cadastrado com sucesso no backend.')
   }
 
-  function handleUpdate(updatedProduct) {
-    updateProduct(editingProduct.id, updatedProduct)
-    setEditingProduct(null)
-    setMessage({ type: 'success', text: `"${updatedProduct.title}" atualizado com sucesso!` })
-    setTimeout(() => setMessage(null), 4000)
-  }
-
-  function handleDelete(product) {
-    if (!window.confirm(`Remover "${product.title || product.name}"?`)) return
-    removeProduct(product.id)
-    setMessage({ type: 'warning', text: `"${product.title || product.name}" removido.` })
-    setTimeout(() => setMessage(null), 4000)
-  }
-
-  function handleLogout() {
-    logout()
-    navigate('/')
-  }
+  // Filtra apenas os produtos criados pelo admin (têm campo createdAt)
+  const adminProducts = products.filter(p => p.createdAt)
+  const totalProducts = products.length
 
   return (
     <section className="section-spacing">
       <div className="admin-page-header">
-        <div>
-          <span className="section-label">Área Administrativa</span>
-          <h2>Gerenciador de Produtos</h2>
-          <p>Olá, <strong>{user?.username}</strong>. Produtos adicionados aqui são persistidos no armazenamento local.</p>
+        <div className="section-header">
+          <p className="section-label">Área administrativa</p>
+          <h2>Gestão de produtos</h2>
+          <p>
+            Produtos cadastrados são persistidos no backend e restaurados ao recarregar a página.
+            Use o formulário ao lado para adicionar novos produtos e gerenciar os itens criados por você.
+          </p>
         </div>
-        <button className="logout-btn" onClick={handleLogout}>Sair da conta</button>
+
+        {/* Info do usuário logado + botão logout */}
+        <div className="admin-user-bar">
+          <div className="admin-user-info">
+            <span className="admin-user-avatar">{user?.name?.charAt(0)}</span>
+            <div>
+              <p className="admin-user-name">{user?.name}</p>
+              <p className="admin-user-email">{user?.email}</p>
+            </div>
+            <span className="badge badge-admin">Admin</span>
+          </div>
+          <button className="logout-btn" onClick={logout}>Sair</button>
+        </div>
       </div>
 
-      {message && <FeedbackMessage type={message.type} message={message.text} />}
+      {/* Stats rápidas */}
+      <div className="admin-stats">
+        <div className="stat-card">
+          <p className="stat-value">{totalProducts}</p>
+          <p className="stat-label">Produtos no catálogo</p>
+        </div>
+        <div className="stat-card">
+          <p className="stat-value">{adminProducts.length}</p>
+          <p className="stat-label">Cadastrados nesta sessão</p>
+        </div>
+      </div>
 
       <div className="admin-layout">
         <div className="admin-form-card">
-          {editingProduct ? (
-            <>
-              <h3 className="admin-subtitle">Editar produto</h3>
-              <button
-                className="cancel-edit-btn"
-                onClick={() => setEditingProduct(null)}
-              >
-                ← Cancelar edição
-              </button>
-              <ProductForm
-                key={editingProduct.id}
-                initialData={editingProduct}
-                onSubmit={handleUpdate}
-                submitLabel="Salvar alterações"
-              />
-            </>
-          ) : (
-            <>
-              <h3 className="admin-subtitle">Novo produto</h3>
-              <ProductForm onSubmit={handleAdd} submitLabel="Cadastrar produto" />
-            </>
-          )}
+          <ProductForm onSubmit={handleAddProduct} />
         </div>
 
         <div className="admin-list-area">
+          {message && (
+            <FeedbackMessage
+              type="success"
+              message={message}
+            />
+          )}
+
           <h3 className="admin-subtitle">
-            Produtos cadastrados por você{' '}
-            <span className="admin-count">({customProducts.length})</span>
+            Produtos cadastrados por você ({adminProducts.length})
           </h3>
 
-          {customProducts.length === 0 ? (
-            <div className="empty-state">
-              <p>Nenhum produto cadastrado ainda.</p>
-              <p>Use o formulário ao lado para adicionar o primeiro.</p>
-            </div>
+          {adminProducts.length === 0 ? (
+            <p style={{ color: 'var(--muted)' }}>Nenhum produto cadastrado ainda. Use o formulário ao lado.</p>
           ) : (
-            <div className="admin-product-list">
-              {customProducts.map((product) => (
-                <div key={product.id} className="admin-product-item">
+            <div className="admin-products-list">
+              {adminProducts.map(product => (
+                <div key={product.id} className="admin-product-row">
                   <img
-                    src={product.image || 'https://via.placeholder.com/60'}
+                    src={product.image}
                     alt={product.title || product.name}
                     className="admin-product-thumb"
+                    onError={e => { e.target.src = 'https://placehold.co/60x60?text=Sem+Img' }}
                   />
                   <div className="admin-product-info">
-                    <strong>{product.title || product.name}</strong>
-                    <span className="admin-product-category">{product.category}</span>
-                    <span className="admin-product-price">
-                      {typeof product.price === 'number'
-                        ? `R$ ${product.price.toFixed(2).replace('.', ',')}`
-                        : product.price}
-                    </span>
+                    <p className="admin-product-name">{product.title || product.name}</p>
+                    <p className="admin-product-meta">
+                      {product.category} • R$ {Number(product.price).toFixed(2)}
+                    </p>
                   </div>
-                  <div className="admin-product-actions">
-                    <button
-                      className="edit-btn"
-                      onClick={() => setEditingProduct(product)}
-                    >
-                      Editar
-                    </button>
-                    <button
-                      className="delete-btn"
-                      onClick={() => handleDelete(product)}
-                    >
-                      Remover
-                    </button>
-                  </div>
+                  <button
+                    className="delete-btn"
+                    onClick={() => deleteProduct(product.id)}
+                    title="Excluir produto"
+                  >
+                    Excluir
+                  </button>
                 </div>
               ))}
             </div>

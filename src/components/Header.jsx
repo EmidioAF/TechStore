@@ -1,21 +1,22 @@
-import { NavLink, useNavigate } from 'react-router-dom'
+/**
+ * Header - Cabeçalho da aplicação.
+ * 
+ * RA3: Exibe estado de autenticação do usuário.
+ * Mostra botão Login/Logout e nome do usuário logado.
+ */
+
+import { NavLink, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function Header() {
-  const { isAuth, user, logout } = useAuth()
-  const navigate = useNavigate()
-
-  function handleLogout() {
-    logout()
-    navigate('/')
-  }
+  const { isAuthenticated, isAdmin, user, logout } = useAuth()
 
   return (
     <header className="site-header">
       <div className="container header-content">
-        <div className="brand">
-          <span className="brand-kicker">⚡ TechStore</span>
-          <p className="brand-sub">Sua loja de tecnologia</p>
+        <div>
+          <p className="brand-kicker">TechStore</p>
+          <h1 className="brand-title">Sua loja de tecnologia</h1>
         </div>
 
         <nav>
@@ -23,20 +24,22 @@ export default function Header() {
             <li><NavLink to="/">Home</NavLink></li>
             <li><NavLink to="/produtos">Produtos</NavLink></li>
             <li><NavLink to="/sobre">Sobre</NavLink></li>
-            {isAuth ? (
-              <>
-                <li><NavLink to="/admin-produtos">Admin</NavLink></li>
-                <li>
-                  <button className="nav-logout" onClick={handleLogout}>
-                    Sair ({user?.username})
-                  </button>
-                </li>
-              </>
-            ) : (
-              <li><NavLink to="/login">Login</NavLink></li>
+            {isAdmin && (
+              <li><NavLink to="/admin-produtos">Admin</NavLink></li>
             )}
           </ul>
         </nav>
+
+        <div className="header-auth">
+          {isAuthenticated ? (
+            <div className="header-user">
+              <span className="header-user-name">Olá, {user.name.split(' ')[0]}</span>
+              <button className="logout-btn-sm" onClick={logout}>Sair</button>
+            </div>
+          ) : (
+            <Link to="/login" className="login-link-btn">Entrar</Link>
+          )}
+        </div>
       </div>
     </header>
   )

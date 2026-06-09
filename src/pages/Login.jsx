@@ -1,57 +1,60 @@
 import { useState } from 'react'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useAuth } from '../context/AuthContext'
 
 export default function Login() {
-  const { login, isAuth } = useAuth()
+  const { login } = useAuth()
   const navigate = useNavigate()
-  const [form, setForm] = useState({ username: '', password: '' })
+  const location = useLocation()
+  const from = location.state?.from?.pathname || '/'
+
+  const [formData, setFormData] = useState({ email: '', password: '' })
   const [error, setError] = useState('')
   const [loading, setLoading] = useState(false)
 
-  if (isAuth) {
-    navigate('/admin-produtos')
-    return null
-  }
-
   function handleChange(e) {
-    setForm((prev) => ({ ...prev, [e.target.name]: e.target.value }))
+    setFormData((prev) => ({ ...prev, [e.target.name]: e.target.value }))
   }
 
   async function handleSubmit(e) {
     e.preventDefault()
     setError('')
     setLoading(true)
-    await new Promise((r) => setTimeout(r, 500))
-    const result = login(form.username, form.password)
-    setLoading(false)
-    if (result.success) {
-      navigate('/admin-produtos')
-    } else {
-      setError(result.error)
+
+    try {
+      await login(formData.email, formData.password)
+      navigate(from, { replace: true })
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setLoading(false)
     }
   }
 
   return (
-    <section className="section-spacing login-page">
+    <div className="login-page">
       <div className="login-card">
         <div className="login-header">
-          <span className="section-label">Área Restrita</span>
-          <h2>Acesso Administrativo</h2>
-          <p>Faça login para gerenciar os produtos da TechStore.</p>
+          <p className="section-label">TechStore</p>
+          <h2>Entrar na sua conta</h2>
+          <p className="login-subtitle">
+            Faça login para acessar a área administrativa
+          </p>
         </div>
+
+        {error && <div className="feedback-message feedback-error">{error}</div>}
 
         <form className="product-form" onSubmit={handleSubmit}>
           <div className="form-group">
-            <label htmlFor="username">Usuário</label>
+            <label htmlFor="email">E-mail</label>
             <input
-              id="username"
-              name="username"
-              type="text"
-              value={form.username}
+              id="email"
+              name="email"
+              type="email"
+              autoComplete="email"
+              value={formData.email}
               onChange={handleChange}
-              placeholder="admin"
-              autoComplete="username"
+              placeholder="seu@email.com"
               required
             />
           </div>
@@ -62,31 +65,39 @@ export default function Login() {
               id="password"
               name="password"
               type="password"
-              value={form.password}
+              autoComplete="current-password"
+              value={formData.password}
               onChange={handleChange}
               placeholder="••••••••"
-              autoComplete="current-password"
               required
             />
           </div>
 
-          {error && (
-            <div className="feedback-message feedback-error">{error}</div>
-          )}
-
-          <button type="submit" className="primary-button" disabled={loading}>
-            {loading ? 'Autenticando...' : 'Entrar'}
+          <button
+            type="submit"
+            className="primary-button login-btn"
+            disabled={loading}
+          >
+            {loading ? 'Entrando...' : 'Entrar'}
           </button>
         </form>
 
-        <p className="login-hint">
-          Demo: usuário <strong>admin</strong> / senha <strong>admin123</strong>
+        <div className="login-hints">
+          <p className="login-hints-title">Credencial inicial de teste:</p>
+          <div className="login-hint-row">
+            <span className="badge badge-admin">Admin</span>
+            <span>admin@techstore.com / admin123</span>
+          </div>
+        </div>
+
+        <p className="login-back">
+          <Link to="/">← Voltar para a loja</Link>
         </p>
 
-        <div className="login-back">
-          <Link to="/">← Voltar para a loja</Link>
-        </div>
+        <p className="login-back">
+          <Link to="/cadastro">Criar conta</Link>
+        </p>
       </div>
-    </section>
+    </div>
   )
 }
