@@ -39,14 +39,14 @@ As principais funcionalidades visíveis no frontend incluem:
 
 ### Catálogo e dados
 
-O catálogo originalmente utilizava dados mockados locais e categorias armazenadas em arquivos separados, o que permitia desenvolver a interface e os componentes antes da integração real com backend. Os produtos e categorias foram organizados em arquivos específicos para facilitar manutenção e reutilização.[query]
+O catálogo originalmente utilizava dados mockados locais e categorias armazenadas em arquivos separados, o que permitia desenvolver a interface e os componentes antes da integração real com backend. Os produtos e categorias foram organizados em arquivos específicos para facilitar manutenção e reutilização.
 
 O catálogo também passou a suportar:
 
 - Busca por nome do produto.
 - Filtro por categoria.
 - Ordenação alfabética crescente/decrescente.
-- Ordenação por preço crescente/decrescente.[4]
+- Ordenação por preço crescente/decrescente.
 
 ### Autenticação
 
@@ -69,7 +69,7 @@ A página administrativa permite:
 
 O upload de imagem é tratado no backend com **Multer**, com armazenamento em pasta própria e validação para aceitar apenas arquivos de imagem, respeitando o tipo de implementação demonstrado no conteúdo da disciplina.
 
-No frontend, o formulário de produto foi ajustado para enviar `FormData`, permitindo upload real de arquivos para o backend e posterior exibição da imagem cadastrada no catálogo e na área administrativa.[2]
+No frontend, o formulário de produto foi ajustado para enviar `FormData`, permitindo upload real de arquivos para o backend e posterior exibição da imagem cadastrada no catálogo e na área administrativa.
 
 ## Tecnologias utilizadas
 
