@@ -17,14 +17,102 @@
   ],
   "products": [
     {
-      "id": 1780966919607,
-      "title": "Teste",
-      "name": "Teste",
-      "price": 1111,
+      "id": 1782413809041,
+      "title": "Monitor UltraView 27 IPS",
+      "name": "Monitor UltraView 27 IPS",
+      "price": 1099.9,
+      "category": "Monitores",
+      "description": "Monitor IPS de 27 polegadas com excelente reprodução de cores.",
+      "image": "https://http2.mlstatic.com/D_NQ_NP_2X_761900-MLA99509379216_112025-F.webp",
+      "createdAt": "2026-06-25T18:56:49.041Z",
+      "createdBy": 1
+    },
+    {
+      "id": 1782413772857,
+      "title": "Suporte AirStand para Notebook",
+      "name": "Suporte AirStand para Notebook",
+      "price": 89.9,
+      "category": "Acessórios",
+      "description": "Suporte ergonômico em alumínio para melhorar postura e ventilação.",
+      "image": "https://assets.betalabs.net/production/flexform/item-images/24738c50867b5490bfb77dc8e5f61af1.png",
+      "createdAt": "2026-06-25T18:56:12.857Z",
+      "createdBy": 1
+    },
+    {
+      "id": 1782413736209,
+      "title": "Mousepad Speed XL",
+      "name": "Mousepad Speed XL",
+      "price": 59.9,
+      "category": "Periféricos",
+      "description": "Mousepad extra grande com base antiderrapante e superfície de alta precisão.",
+      "image": "https://http2.mlstatic.com/D_NQ_NP_2X_666665-MLA96086175183_102025-F.webp",
+      "createdAt": "2026-06-25T18:55:36.209Z",
+      "createdBy": 1
+    },
+    {
+      "id": 1782413701762,
+      "title": "Caixa de Som SoundBox Duo",
+      "name": "Caixa de Som SoundBox Duo",
+      "price": 149.9,
       "category": "Áudio",
-      "description": "teste",
-      "image": "http://localhost:3001/uploads/1780966919604-thelogo.PNG",
-      "createdAt": "2026-06-09T01:01:59.607Z",
+      "description": "Caixa de som USB com áudio estéreo e design compacto.",
+      "image": "https://http2.mlstatic.com/D_NQ_NP_2X_743659-MLA99538812544_122025-F.webp",
+      "createdAt": "2026-06-25T18:55:01.762Z",
+      "createdBy": 1
+    },
+    {
+      "id": 1782413666532,
+      "title": "Webcam VisionCam 1080p",
+      "name": "Webcam VisionCam 1080p",
+      "price": 179.9,
+      "category": "Acessórios",
+      "description": "Webcam Full HD ideal para aulas, reuniões e chamadas de vídeo.",
+      "image": "https://www.bing.com/th?id=OPHS.oyq2Q6vugXa2IA474C474&o=5&pid=21.1&h=140&qlt=100&dpr=1%2C3&o=2&w=147",
+      "createdAt": "2026-06-25T18:54:26.532Z",
+      "createdBy": 1
+    },
+    {
+      "id": 1782413477857,
+      "title": "Monitor Vision 24 Full HD",
+      "name": "Monitor Vision 24 Full HD",
+      "price": 699.9,
+      "category": "Monitores",
+      "description": "Monitor de 24 polegadas com resolução Full HD e taxa de atualização estável.",
+      "image": "https://th.bing.com/th/id/OPHS.qDAC03HoRz0kUg474C474?w=592&h=550&o=5&dpr=1.3&pid=21.1",
+      "createdAt": "2026-06-25T18:51:17.857Z",
+      "createdBy": 1
+    },
+    {
+      "id": 1782413445865,
+      "title": "Headset Storm Pro",
+      "name": "Headset Storm Pro",
+      "price": 199.9,
+      "category": "Áudio",
+      "description": "Headset estéreo com microfone ajustável e ótimo conforto para uso diário.",
+      "image": "https://http2.mlstatic.com/D_NQ_NP_2X_911126-MLA106302961552_022026-F.webp",
+      "createdAt": "2026-06-25T18:50:45.865Z",
+      "createdBy": 1
+    },
+    {
+      "id": 1782413411738,
+      "title": "Teclado Mecânico Orion 60%",
+      "name": "Teclado Mecânico Orion 60%",
+      "price": 249.9,
+      "category": "Periféricos",
+      "description": "Teclado mecânico compacto com switches azuis e layout 60%.",
+      "image": "https://down-br.img.susercontent.com/file/172b4bfd4e245cfe10fd41c5b1774577",
+      "createdAt": "2026-06-25T18:50:11.738Z",
+      "createdBy": 1
+    },
+    {
+      "id": 1782413379110,
+      "title": "Mouse Gamer RGB Falcon X",
+      "name": "Mouse Gamer RGB Falcon X",
+      "price": 129.9,
+      "category": "Periféricos",
+      "description": "Mouse gamer com 7200 DPI, iluminação RGB e 6 botões programáveis.",
+      "image": "https://tse4.mm.bing.net/th/id/OIP.rDUFl_I9exFdvPidEHtszQHaHa?rs=1&pid=ImgDetMain&o=7&rm=3",
+      "createdAt": "2026-06-25T18:49:39.110Z",
       "createdBy": 1
     }
   ]
